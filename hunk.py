@@ -30,7 +30,7 @@ class Hunk:
 
     def __add__(self, other: Hunk) -> Hunk:
         return Hunk(text=self.text + other.text,
-                    size=self.size + other.size)
+                    size=len(self) + len(other))
 
     def __str__(self) -> str:
         return f"Hunk({len(self)}, {self.text})"
