@@ -60,8 +60,7 @@ import hunk
 import ask
 import prompts
 
-
-def main(token_budget: int = 4096, preamble_budget: int = 3000):
+def main(source, token_budget: int = 4096, preamble_budget: int = 3000):
     """
     An LLM can attend to a limited token space. That token space can be used
     for every describable purpose. To account for this finite resource, I
@@ -101,7 +100,6 @@ def main(token_budget: int = 4096, preamble_budget: int = 3000):
     """
     
     # PHASE 0: Collect sources, define resources
-    source = sources.get("Rights of Man")[0]  # Answer to Burke
     n: int = len(source.hunks)  # hunk count
     i: int = 0                  # hunk index
 
@@ -163,5 +161,13 @@ def main(token_budget: int = 4096, preamble_budget: int = 3000):
     print(response.text)
     return response
 
-if __name__ == "__main__": main()
+
+if __name__ == "__main__": 
+    import argparse
+    parser = argparse.ArgumentParser(description="Read some text and return notes.")
+    parser.add_argument('title', type=str, help="What to read.", default="Answer to Burke")
+    args = parser.parse_args()
+    
+    source = sources.get(args.title)
+    main(source)
 
