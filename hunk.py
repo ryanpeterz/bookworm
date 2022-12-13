@@ -13,25 +13,32 @@ _BookWorm_tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 
 class Hunk:
     text: str
-    tokens: int
-
-    def __init__(self, text: str, tokens: Optional[int] = None):
+    _len: int
+    
+    def __init__(self, text: str, size: Optional[int] = None):
         self.text = text
-        # tokens, tokens, tokens!
-        if tokens is None:
-            tokens = len(_BookWorm_tokenizer(text)['input_ids']) 
-        self.tokens = tokens
+        self._len = size
+
+    @property
+    def tokens(self) -> List[int]:
+        return _BookWorm_tokenizer(self.text)['input_ids']
+
+    def __len__(self) -> int:
+        if _len is None:
+            self._len = len(self.tokens)
+        return self._len
 
     def __add__(self, other: Hunk) -> Hunk:
         return Hunk(text=self.text + other.text,
-                    tokens=self.tokens + other.tokens)
+                    size=self.size + other.size)
 
     def __str__(self) -> str:
-        return f"Hunk({self.tokens}, {self.text})"
+        return f"Hunk({len(self)}, {self.text})"
 
     def __repr__(self) -> str:
         if len(self.text) < 13: return str(self)
-        return f"Hunk({self.tokens}, {self.text[:14]}...)" 
+        return f"Hunk({len(self)}, {self.text[:14]}...)" 
+
 
 MT = Hunk('', 0)
 SP = Hunk(' ', 1)
@@ -55,5 +62,5 @@ def generator(fp: Path, sep: str = '\n\n') -> Hunk:
         yield Hunk(text='\n'.join(lines))
 
 def of_text(text: str) -> Hunk: return Hunk(text)
-def of_known_size(tokens: int, text: str) -> Hunk: return Hunk(text, tokens)
+def of_known_size(size: int, text: str) -> Hunk: return Hunk(text, size)
 

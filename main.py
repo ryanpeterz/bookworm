@@ -106,14 +106,14 @@ def main(source, token_budget: int = 4096, preamble_budget: int = 3000):
     # PHASE 1: Initial Prompt
     empty_prompt = prompts.initial(source.title, hunk.MT)
     
-    remaining_tokens = token_budget - empty_prompt.tokens
+    remaining_tokens = token_budget - len(empty_prompt)
     text_token_limit = 2 * remaining_tokens // 3
     text = hunk.MT
 
     # Accumulate hunks up to limit
     while i < n:
-        if source.hunks[i].tokens < text_token_limit:
-            text_token_limit -= source.hunks[i].tokens
+        if len(source.hunks[i]) < text_token_limit:
+            text_token_limit -= len(source.hunks[i])
             text += source.hunks[i]
             i += 1
         else:
@@ -127,27 +127,27 @@ def main(source, token_budget: int = 4096, preamble_budget: int = 3000):
     
     # PHASE 2: Ongoing Prompt
     empty_prompt = prompts.ongoing(source.title, preceding, hunk.MT)
-    remaining_tokens = token_budget - empty_prompt.tokens
+    remaining_tokens = token_budget - len(empty_prompt)
     text_token_limit = 2 * remaining_tokens // 3
     text = hunk.MT
         
     # Accumulate hunks up to limit
     while i < n:
-        if source.hunks[i].tokens < text_token_limit:
-            text_token_limit -= source.hunks[i].tokens
+        if len(source.hunks[i]) < text_token_limit:
+            text_token_limit -= len(source.hunks[i])
             text += source.hunks[i]
             i += 1
-        elif text.tokens > 0:
+        elif len(text) > 0:
             preceding += ask.politely(prompts.ongoing(source.title,
                                                       preceding, text))
             # Refresh text buffer
             empty_prompt = prompts.ongoing(source.title, preceding, hunk.MT)
-            if empty_prompt.tokens > preamble_budget:
+            if len(empty_prompt) > preamble_budget:
                 preceding = ask.politely(prompts.condense(source.title,
                                                           preceding))
                 empty_prompt = prompts.ongoing(source.title, preceding,
                                                hunk.MT)
-            remaining_tokens = token_budget - empty_prompt.tokens
+            remaining_tokens = token_budget - len(empty_prompt)
             text_token_limit = 2 * remaining_tokens // 3
             text = hunk.MT
         else:

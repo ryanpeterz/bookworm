@@ -1,8 +1,11 @@
-r"""Parse the 'Rights of Man' source text into hunks.
+r"""Parse a directory of source text into hunks according to `src/__meta__.json`
 
-Author: Thomas Paine
-Source: https://www.ushistory.org/Paine/rights/
-Format:
+Example:
+
+  Title: Rights of Man
+  Author: Thomas Paine
+  Source: https://www.ushistory.org/Paine/rights/
+  Format:
     .
     |-Answer to Burke (1.AtB)
     | |-01-
@@ -39,6 +42,7 @@ from pathlib import Path
 from dataclasses import dataclass
 from typing import List
 
+
 @dataclass
 class Wad:
     label: str
@@ -47,6 +51,7 @@ class Wad:
 
 
 VERIFY_ATTEMPTS: int = 3
+
 
 def verify_parse(fp, attempts: int = 3, override: bool = False) -> bool:
     if override: return True
@@ -94,8 +99,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog = 'HunkParser',
         description = 'Parses raw text into hunks for BookWorm',
-        epilog = 'Slow due to missed rustful tokenizer implementation.'
-                 'Remember to compute calmly ^_^')
+        epilog = 'Remember to compute calmly ^_^')
     parser.add_argument('src',
                         type=pathlib.Path,
                         help="The base directory of the source, "

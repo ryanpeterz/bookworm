@@ -33,7 +33,7 @@ TOKEN_BUDGET = 4096
 
 
 def politely(prompt: hunk.Hunk, model: str = MODEL) -> hunk.Hunk:
-    logger.info(f"prompt[{prompt.tokens}]:\n{prompt.text}")
+    logger.info(f"prompt[{len(prompt)}]:\n{prompt.text}")
 
     with rate_limiter:
         with token_limiter as burn:
@@ -41,7 +41,7 @@ def politely(prompt: hunk.Hunk, model: str = MODEL) -> hunk.Hunk:
             response = openai.Completion.create(
                 model=model,
                 prompt=prompt.text,
-                max_tokens=TOKEN_BUDGET - prompt.tokens)
+                max_tokens=TOKEN_BUDGET - len(prompt))
             # TODO(b/): immediately restore unused tokens
             # unburn(TOKEN_BUDGET - response["usage"]["total_tokens"])
 
