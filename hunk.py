@@ -9,6 +9,7 @@ from typing import List
 from transformers import GPT2Tokenizer
 
 _BookWorm_tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+_BookWorm_tokenizer.model_max_length = 4096  # override attention head size
 
 
 class Hunk:
@@ -24,7 +25,7 @@ class Hunk:
         return _BookWorm_tokenizer(self.text)['input_ids']
 
     def __len__(self) -> int:
-        if _len is None:
+        if self._len is None:
             self._len = len(self.tokens)
         return self._len
 
