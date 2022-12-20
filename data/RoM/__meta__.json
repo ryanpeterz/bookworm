@@ -1,0 +1,21 @@
+{
+  "title": "Rights of Man",
+  "author": "Thomas Paine",
+  "source": "https://www.ushistory.org/Paine/rights/",
+  "wads": {
+    "Answer to Burke": {
+      "title": "Being an Answer to Mr. Burke's Attack on the French Revolution",
+      "dir": "AtB",
+      "files": ["01", "02", "03", "04", "05", "06", "07", "08",
+                "09", "10", "11", "12", "13", "14", "15", "16"]
+    },
+    "Society and Civilization": {
+      "title": "Of Society and Civilization",
+      "files": ["SaC"]
+    },
+    "Present Old Governments": {
+      "title": "Of the Origin of the Present Old Governments",
+      "files": ["POG"]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Unqualified Reservations",
+  "author": "Curtis Yarvin",
+  "source": "https://www.unqualified-reservations.org/",
+  "wads": {
+    "Sam Altman": {
+      "title": "Sam Altman is Not a Blithering Idiot",
+      "files": ["SAiNaBI"]
+    }
+  }
+}
